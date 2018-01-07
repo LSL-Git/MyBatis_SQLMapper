@@ -3,6 +3,8 @@ package com.lsl.ssm.dao.user;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.lsl.ssm.pojo.User;
 
 public interface UserMapper {
@@ -43,4 +45,19 @@ public interface UserMapper {
 	 * @return
 	 */
 	public int addUser(User user);
+	
+	/**
+	 * 修改用户信息
+	 * @param user
+	 * @return
+	 */
+	public int modify(User user);
+	
+	/**
+	 * 修改当前用户名密码
+	 * @param id
+	 * @param pwd
+	 * @return
+	 */
+	public int updatePwd(@Param("id")Integer id, @Param("userPassword")String pwd);
 }

@@ -91,7 +91,38 @@
 		values (#{userCode}, #{userName}, #{userPassword},#{gender},#{birthday},
 		#{phone},#{address},#{userRole},#{createdBy},#{creationDate})
 	</insert>
-	
+```
+
+6、更新数据库信息1
+```
+	// UserMapper.java
+	public interface UserMapper {
+		public int modify(User user);
+	}
+
+	// UserMapper.xml
+	<!-- 修改用户信息 -->
+	<update id="modify" parameterType="User">
+		update smbms_user set
+		userCode=#{userCode},userName=#{userName},userPassword=#{userPassword},
+		gender=#{gender},birthday=#{birthday},phone=#{phone},address=#{address},
+		userRole=#{userRole},modifyBy=#{modifyBy},modifyDate=#{modifyDate}
+		where id = #{id}
+	</update>	
+```
+
+6、更新数据库信息2
+```
+	// UserMapper.java
+	public interface UserMapper {
+		public int updatePwd(@Param("id")Integer id, @Param("userPassword")String pwd);
+	}
+
+	// UserMapper.xml
+	<!-- 修改当前用户密码 -->
+	<update id="updatePwd">
+		update smbms_user set userPassword=#{userPassword} where id = #{id}
+	</update>
 ```
 
 @Author 瞌睡虫   

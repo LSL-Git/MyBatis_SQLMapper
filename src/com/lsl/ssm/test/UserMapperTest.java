@@ -208,4 +208,68 @@ public class UserMapperTest {
 		}
 		logger.debug("==>testAddUser count:" + count);
 	}
+	
+	@Test
+	public void testModify() {
+		System.err.println("======================testModify=========================");
+		SqlSession sqlSession = null;
+		int count = 0;
+		try {
+			User user = new User();
+			user.setId(19);
+			user.setUserCode("testmodify");
+			user.setUserName("测试用户修改");
+			user.setUserPassword("0000001");
+			Date birthday = new SimpleDateFormat("yyyy-MM-dd").parse("1980-10-10");
+			user.setBirthday(birthday);
+			user.setCreationDate(new Date());
+			user.setAddress("地址测试修改");
+			user.setGender(2);
+			user.setPhone("13600002222");
+			user.setUserRole(2);
+			user.setModifyBy(1);
+			user.setModifyDate(new Date());
+			
+			sqlSession = MyBatisUtils.createSqlSession();
+			count = sqlSession.getMapper(UserMapper.class).modify(user);
+			
+			int i = 3/0; // 模拟异常，进行使其进行回滚
+			
+			sqlSession.commit();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			sqlSession.rollback();  // 回滚
+			count = 0;
+		} finally {
+			MyBatisUtils.closeSqlSession(sqlSession);
+		}
+		logger.debug("==>testModify count:" + count);
+	}
+	
+	@Test
+	public void testUpdatePwd() {
+		System.err.println("======================testModify=========================");
+		SqlSession sqlSession = null;
+		int count = 0;
+		try {
+			sqlSession = MyBatisUtils.createSqlSession();
+			
+			count = sqlSession.getMapper(UserMapper.class).updatePwd(18, "0000003");
+			
+			int i = 3/0; // 模拟异常，进行使其进行回滚
+			
+			sqlSession.commit();			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			
+			sqlSession.rollback();
+			count = 0;
+		} finally {
+			MyBatisUtils.closeSqlSession(sqlSession);
+		}
+		logger.debug("==>testUpdatePwd count:" + count);
+	}
+	
 }

@@ -64,8 +64,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert into smbms_user
 		(userCode,userName,userPassword,gender,birthday,phone,
 		address,userRole,createdBy,creationDate)
-		values (#{userCode}, #{userName}, #{userPassword},#{gender},#{birthday},
+		values (#{userCode},
+		#{userName}, #{userPassword},#{gender},#{birthday},
 		#{phone},#{address},#{userRole},#{createdBy},#{creationDate})
 	</insert>
 
+	<!-- 修改用户信息 -->
+	<update id="modify" parameterType="User">
+		update smbms_user set
+		userCode=#{userCode},userName=#{userName},userPassword=#{userPassword},
+		gender=#{gender},birthday=#{birthday},phone=#{phone},address=#{address},
+		userRole=#{userRole},modifyBy=#{modifyBy},modifyDate=#{modifyDate}
+		where id = #{id}
+	</update>
+	
+	<!-- 修改当前用户密码 -->
+	<update id="updatePwd">
+		update smbms_user set userPassword=#{userPassword} where id = #{id}
+	</update>
 </mapper>
