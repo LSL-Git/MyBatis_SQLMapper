@@ -36,4 +36,11 @@ public interface UserMapper {
 	 * @return
 	 */
 	public List<User> getUserListByMap(Map<String, String> userMap);
+	
+	/**
+	 * 增加用户
+	 * @param user
+	 * @return
+	 */
+	public int addUser(User user);
 }

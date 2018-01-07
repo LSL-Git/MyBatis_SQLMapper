@@ -75,6 +75,25 @@
 
 ```
 
+5、向数据库添加信息
+```
+	// UserMapper.java
+	public interface UserMapper {
+		public int addUser(User user);
+	}
+
+	// UserMapper.xml
+	<!-- 增加新用户 -->
+	<insert id="addUser" parameterType="User">
+		insert into smbms_user
+		(userCode,userName,userPassword,gender,birthday,phone,
+		address,userRole,createdBy,creationDate)
+		values (#{userCode}, #{userName}, #{userPassword},#{gender},#{birthday},
+		#{phone},#{address},#{userRole},#{createdBy},#{creationDate})
+	</insert>
+	
+```
+
 @Author 瞌睡虫   
 @mybatis-3.2.2   
 @Database: mysql 5.7.15   

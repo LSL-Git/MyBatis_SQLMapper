@@ -51,10 +51,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="userRoleName" column="roleName" />
 	</resultMap>
 
-	<select id="getUserListByUser" resultMap="userList" parameterType="User">
+	<select id="getUserListByUser" resultMap="userList"
+		parameterType="User">
 		select u.*,r.roleName from smbms_user u,smbms_role r
 		where u.userName like CONCAT ('%',#{userName},'%')
-		and u.userRole = #{userRole} and u.userRole = r.id
+		and u.userRole =
+		#{userRole} and u.userRole = r.id
 	</select>
+
+	<!-- 增加新用户 -->
+	<insert id="addUser" parameterType="User">
+		insert into smbms_user
+		(userCode,userName,userPassword,gender,birthday,phone,
+		address,userRole,createdBy,creationDate)
+		values (#{userCode}, #{userName}, #{userPassword},#{gender},#{birthday},
+		#{phone},#{address},#{userRole},#{createdBy},#{creationDate})
+	</insert>
 
 </mapper>

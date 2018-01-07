@@ -1,6 +1,8 @@
 package com.lsl.ssm.test;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -137,8 +139,7 @@ public class UserMapperTest {
 					" and address: " + user.getAddress());
 		}
 	}
-	
-	
+		
 	@Test
 	public void testGetUserListByMap() {
 		System.err.println("======================testGetUserListByMap=========================");
@@ -168,4 +169,43 @@ public class UserMapperTest {
 		}
 	}
 
+	@Test
+	public void testAddUser() {
+		System.err.println("======================testAddUser=========================");
+		SqlSession sqlSession = null;
+		int count = 0;
+		try {
+			sqlSession = MyBatisUtils.createSqlSession();
+			
+			User user = new User();
+			user.setUserCode("test002");
+			user.setUserName("测试用户002");
+			user.setUserPassword("1234567");
+			Date birthday = new SimpleDateFormat("yyyy-MM-dd").parse("1984-12-12");
+			user.setBirthday(birthday);
+			user.setCreationDate(new Date());
+			user.setAddress("地址测试");
+			user.setGender(1);
+			user.setPhone("13688783697");
+			user.setUserRole(3);
+			user.setCreatedBy(1);
+			user.setCreationDate(new Date());
+			
+			count = sqlSession.getMapper(UserMapper.class).addUser(user);		
+			
+			int i = 3/0; // 模拟异常，进行使其进行回滚
+			
+			sqlSession.commit(); // 必须提交，不然不会将数据保存到数据库
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			
+			sqlSession.rollback(); // 回滚
+			count = 0;
+		} finally {
+			MyBatisUtils.closeSqlSession(sqlSession);
+		}
+		logger.debug("==>testAddUser count:" + count);
+	}
 }
