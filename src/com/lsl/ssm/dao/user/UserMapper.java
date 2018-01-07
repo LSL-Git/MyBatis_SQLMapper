@@ -60,4 +60,11 @@ public interface UserMapper {
 	 * @return
 	 */
 	public int updatePwd(@Param("id")Integer id, @Param("userPassword")String pwd);
+	
+	/**
+	 * 删除指定id的用户信息
+	 * @param delId
+	 * @return
+	 */
+	public int deleteUserById(@Param("id")Integer delId);
 }

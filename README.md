@@ -22,7 +22,7 @@
 	</select>
 ```
 
-2、对象
+2、（传入参数：对象）
 ```
 	// UserMapper.java
 	public interface UserMapper {
@@ -37,7 +37,7 @@
 	</select>
 ```
 
-3、Map
+3、（传入参数：Map）
 ```
 	// UserMapper.java
 	public interface UserMapper {
@@ -111,7 +111,7 @@
 	</update>	
 ```
 
-6、更新数据库信息2
+7、更新数据库信息2
 ```
 	// UserMapper.java
 	public interface UserMapper {
@@ -124,6 +124,21 @@
 		update smbms_user set userPassword=#{userPassword} where id = #{id}
 	</update>
 ```
+
+8、删除数据
+```
+	// UserMapper.java
+	public interface UserMapper {
+		public int deleteUserById(@Param("id")Integer delId);
+	}
+
+	// UserMapper.xml
+	<!-- 根据用户id删除用户信息 -->
+	<delete id="deleteUserById">
+		delete from smbms_user where id = #{id} 
+	</delete>
+```
+
 
 @Author 瞌睡虫   
 @mybatis-3.2.2   

@@ -178,8 +178,8 @@ public class UserMapperTest {
 			sqlSession = MyBatisUtils.createSqlSession();
 			
 			User user = new User();
-			user.setUserCode("test002");
-			user.setUserName("测试用户002");
+			user.setUserCode("test003");
+			user.setUserName("测试用户003");
 			user.setUserPassword("1234567");
 			Date birthday = new SimpleDateFormat("yyyy-MM-dd").parse("1984-12-12");
 			user.setBirthday(birthday);
@@ -272,4 +272,29 @@ public class UserMapperTest {
 		logger.debug("==>testUpdatePwd count:" + count);
 	}
 	
+	
+	@Test
+	public void testDeleteUserById() {
+		System.err.println("======================testDeleteUserById=========================");
+		SqlSession sqlSession = null;
+		int count = 0;
+		try {
+			sqlSession = MyBatisUtils.createSqlSession();
+			
+			count = sqlSession.getMapper(UserMapper.class).deleteUserById(28);
+			
+//			int i = 3/0; // 模拟异常，进行使其进行回滚
+			
+			sqlSession.commit();			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			
+			sqlSession.rollback();
+			count = 0;
+		} finally {
+			MyBatisUtils.closeSqlSession(sqlSession);
+		}
+		logger.debug("==>testDeleteUserById count:" + count);
+	}
 }

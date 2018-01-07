@@ -82,4 +82,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="updatePwd">
 		update smbms_user set userPassword=#{userPassword} where id = #{id}
 	</update>
+	
+	<!-- 根据用户id删除用户信息 -->
+	<delete id="deleteUserById">
+		delete from smbms_user where id = #{id} 
+	</delete>
 </mapper>
