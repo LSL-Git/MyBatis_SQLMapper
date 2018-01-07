@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lsl.ssm.dao.user.UserMapper">
+
+	<!-- 查询用户表记录数 -->
+	<select id="count" resultType="int">
+		select count(1) as count from
+		smbms_user
+	</select>
+
+	<!-- 查询用户列表 -->
+	<select id="getUserList" resultType="User">
+		select * from smbms_user
+	</select>
+
+	<!--
+		根据用户名称查询用户列表(模糊查询) concat 连接字符串 resultType 返回类型， paramenterType传参类型
+	-->
+	<select id="getUserListByUserName" resultType="User"
+		parameterType="String">
+		select * from smbms_user where userName like CONCAT
+		('%',#{userName},'%')
+	</select>
+
+	<!-- 查询用户列表(参数：对象入参) -->
+	<select id="getUserListByUser" resultType="User" parameterType="User">
+		select * from smbms_user where userName like CONCAT
+		('%',#{userName},'%') and userRole = #{userRole}
+	</select>
+
+	<!-- 查询用户列表(参数：Map) -->
+	<select id="getUserListByMap" resultType="User" parameterType="Map">
+		select * from smbms_user where userName like CONCAT
+		('%',#{uName},'%') and userRole = #{uRole}
+	</select>
+</mapper>
