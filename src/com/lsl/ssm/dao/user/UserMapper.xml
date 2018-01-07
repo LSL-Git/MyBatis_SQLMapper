@@ -26,14 +26,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<!-- 查询用户列表(参数：对象入参) -->
-	<select id="getUserListByUser" resultType="User" parameterType="User">
+	<!--
+		<select id="getUserListByUser" resultType="User" parameterType="User">
 		select * from smbms_user where userName like CONCAT
-		('%',#{userName},'%') and userRole = #{userRole}
-	</select>
+		('%',#{userName},'%') and userRole = #{userRole} </select>
+	-->
 
 	<!-- 查询用户列表(参数：Map) -->
 	<select id="getUserListByMap" resultType="User" parameterType="Map">
 		select * from smbms_user where userName like CONCAT
-		('%',#{uName},'%') and userRole = #{uRole}
+		('%',#{uName},'%')
+		and userRole = #{uRole}
 	</select>
+
+	<!-- 当数据库中的字段信息与对象的属性不一致时需要通过resultMap来映射 -->
+	<resultMap type="User" id="userList">
+		<result property="id" column="id" />
+		<result property="userCode" column="userCode" />
+		<result property="userName" column="userName" />
+		<result property="phone" column="phone" />
+		<result property="birthday" column="birthday" />
+		<result property="gender" column="gender" />
+		<result property="userRole" column="userRole" />
+		<result property="userRoleName" column="roleName" />
+	</resultMap>
+
+	<select id="getUserListByUser" resultMap="userList" parameterType="User">
+		select u.*,r.roleName from smbms_user u,smbms_role r
+		where u.userName like CONCAT ('%',#{userName},'%')
+		and u.userRole = #{userRole} and u.userRole = r.id
+	</select>
+
 </mapper>

@@ -122,11 +122,19 @@ public class UserMapperTest {
 		} finally {
 			MyBatisUtils.closeSqlSession(sqlSession);
 		}
-
+		
+		/**
+		 * 若设置resultMap的自动映射级别为NONE，
+		 * 那么没有进行映射匹配的属性（比如：address等）则输出为null
+		 * 若不设置resultMap的自动映射级别，则不管是否进行了映射，所有的属性值均可输出
+		 */
 		for (User user : userList) {
-			logger.debug("==>testGetUserListByUser userCode: "
-					+ user.getUserCode() + " and userName: "
-					+ user.getUserName());
+			logger.debug("testGetUserList userCode: " + user.getUserCode() + 
+					" and userName: " + user.getUserName() + 
+					" and userRole: " + user.getUserRole() + 
+					" and userRoleName: " + user.getUserRoleName() +
+					" and age: " + user.getAge() +
+					" and address: " + user.getAddress());
 		}
 	}
 	

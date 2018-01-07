@@ -17,6 +17,30 @@ public class User {
 	private Date creationDate; // 创建时间
 	private Integer modifyBy; // 更新者
 	private Date modifyDate; // 更新时间
+	
+	@SuppressWarnings("unused")
+	private Integer age;
+	private String userRoleName;
+	
+
+	@SuppressWarnings("deprecation")
+	public Integer getAge() {
+		Date date = new Date();
+		Integer age = date.getYear() - birthday.getYear();
+		return age;
+	}
+
+	public void setAge(Integer age) {
+		this.age = age;
+	}
+
+	public String getUserRoleName() {
+		return userRoleName;
+	}
+
+	public void setUserRoleName(String userRoleName) {
+		this.userRoleName = userRoleName;
+	}
 
 	public Integer getId() {
 		return id;
