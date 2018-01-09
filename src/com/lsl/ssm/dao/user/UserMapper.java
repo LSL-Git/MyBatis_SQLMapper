@@ -95,4 +95,11 @@ public interface UserMapper {
 	 * @return
 	 */
 	public List<User> getAddressListByUserId2(@Param("id")Integer userId);
+	
+	/**
+	 * 获取指定用户的地址列表(collection)
+	 * @param userId
+	 * @return
+	 */
+	public User getAddressListByUserId3(@Param("id")Integer userId);
 }

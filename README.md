@@ -317,6 +317,22 @@
 	<!-- 获取指定用户的地址列表2（user表-address表： 1对多） collection end -->
 ```
 
+13、resultMap自动映射的匹配 级别
+```
+	// mybatis-config.xml
+	<settings>
+		<setting name="logImpl" value="LOG4J"/>
+		<!-- 设置resultMap的自动映射级别 
+			NONE（禁止自动匹配，无法自动匹配JavaBean属性）
+			PARTIAL(默认:局部)
+			FULL(全部映射，除了匹配resultMap属性还有JavaBean的全部属性)
+		-->
+		<!-- <setting name="autoMappingBehavior" value="NONE"/> -->
+		<!-- <setting name="autoMappingBehavior" value="PARTIAL"/> -->
+		<!-- <setting name="autoMappingBehavior" value="FULL"/> -->
+	</settings>
+```
+
 
 @Author 瞌睡虫   
 @mybatis-3.2.2   

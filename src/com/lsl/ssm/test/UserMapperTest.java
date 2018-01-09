@@ -429,4 +429,36 @@ public class UserMapperTest {
 		}
 	}
 	
+	@Test
+	public void getAddressListByUserIdTest3(){
+		System.err.println("======================getAddressListByUserIdTest3=========================");
+		SqlSession sqlSession = null;
+		User user = null;
+		Integer userId = 1;
+		try {
+			sqlSession = MyBatisUtils.createSqlSession();
+			user = sqlSession.getMapper(UserMapper.class).getAddressListByUserId3(userId);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally{
+			MyBatisUtils.closeSqlSession(sqlSession);
+		}
+		if(null != user){
+			logger.debug("userList(include:addresslist) =====> userCode: " + user.getUserCode() + ", userName: " + user.getUserName()
+					+", <未做映射字段>userPassword: " + user.getUserPassword());
+			if(user.getAddressList().size() > 0){
+				for(Address address : user.getAddressList()){
+					logger.debug("address ----> id: " + address.getId() + ", contact: " + address.getContact() 
+							+ ", addressDesc: " + address.getAddressDesc() + ", tel: " + address.getTel()
+							+ ", postCode: " + address.getPostCode() + ", <未做映射字段>userId: " + address.getUserId());
+				}
+			}else{
+				logger.debug("该用户下无地址列表！");
+			}
+		}else{
+			logger.debug("查无此用户！");
+		}
+		
+	}
 }

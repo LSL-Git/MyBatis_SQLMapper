@@ -9,8 +9,14 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	
 	<settings>
 		<setting name="logImpl" value="LOG4J"/>
-		<!-- 设置resultMap的自动映射级别为NONE（禁止自动匹配） -->
+		<!-- 设置resultMap的自动映射级别 
+			NONE（禁止自动匹配，无法自动匹配JavaBean属性）
+			PARTIAL(默认:局部)
+			FULL(全部映射，除了匹配resultMap属性还有JavaBean的全部属性)
+		-->
 		<!-- <setting name="autoMappingBehavior" value="NONE"/> -->
+		<!-- <setting name="autoMappingBehavior" value="PARTIAL"/> -->
+		<!-- <setting name="autoMappingBehavior" value="FULL"/> -->
 	</settings>
 	
 	<typeAliases>

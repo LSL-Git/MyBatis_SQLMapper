@@ -160,9 +160,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="getAddressListByUserId" parameterType="Integer"
 		resultMap="userAddressList">
-		select u.*, a.id as a_id, a.contact, a.addressDesc, a.tel, a.postCode
+		select u.*, a.id as a_id, a.contact, a.addressDesc, a.tel,
+		a.postCode
 		from smbms_user u, smbms_address a
-		where u.id=a.userId and u.id=#{id}
+		where u.id=a.userId and
+		u.id=#{id}
 	</select>
 	<!-- 获取指定用户的地址列表（user表-address表： 1对多） collection end -->
 
@@ -172,9 +174,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="userCode" column="userCode" />
 		<result property="userName" column="userName" />
 		<!-- ofType 对应JavaBean -->
-		<collection property="addressList" ofType="Address" resultMap="addressResult"/>
+		<collection property="addressList" ofType="Address"
+			resultMap="addressResult" />
 	</resultMap>
-	
+
 	<resultMap type="Address" id="addressResult">
 		<id property="id" column="a_id" />
 		<result property="postCode" column="postCode" />
@@ -185,10 +188,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="getAddressListByUserId2" parameterType="Integer"
 		resultMap="userAddressList2">
-		select u.*, a.id as a_id, a.contact, a.addressDesc, a.tel, a.postCode
+		select u.*, a.id as a_id, a.contact, a.addressDesc, a.tel,
+		a.postCode
 		from smbms_user u, smbms_address a
-		where u.id=a.userId and u.id=#{id}
+		where u.id=a.userId and
+		u.id=#{id}
 	</select>
 	<!-- 获取指定用户的地址列表2（user表-address表： 1对多） collection end -->
-	
+
+	<!-- 获取指定用户的地址列表3(user表-address表：1对多关系) collection start-->
+	<resultMap type="User" id="userAddressResult3">
+		<id property="id" column="id" />
+		<result property="userCode" column="userCode" />
+		<result property="userName" column="userName" />
+		<collection property="addressList" ofType="Address"
+			resultMap="addressResult3" />
+	</resultMap>
+
+	<resultMap type="Address" id="addressResult3">
+		<id property="id" column="a_id" />
+		<result property="postCode" column="postCode" />
+		<result property="tel" column="tel" />
+		<result property="contact" column="contact" />
+		<result property="addressDesc" column="addressDesc" />
+		<!--<result property="userId" column="userId"/>-->
+	</resultMap>
+
+	<select id="getAddressListByUserId3" parameterType="Integer"
+		resultMap="userAddressResult3">
+		select u.*,a.id as
+		a_id,a.contact,a.addressDesc,a.postCode,a.tel,a.userId
+		from smbms_user
+		u LEFT JOIN smbms_address a ON u.id = a.userId
+		where u.id=#{id}
+	</select>
+	<!-- collection end -->
 </mapper>
