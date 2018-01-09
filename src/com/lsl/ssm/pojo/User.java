@@ -1,6 +1,7 @@
 package com.lsl.ssm.pojo;
 
 import java.util.Date;
+import java.util.List;
 
 public class User {
 
@@ -22,7 +23,30 @@ public class User {
 	private Integer age;
 	private String userRoleName;
 	
-
+	// collection
+	private List<Address> addressList;
+	
+	public List<Address> getAddressList() {
+		return addressList;
+	}
+	
+	public void setAddressList(List<Address> addressList) {
+		this.addressList = addressList;
+	}
+	// collection
+	
+	// association
+	private Role role; // 用户角色
+	
+	public Role getRole() {
+		return role;
+	}
+	
+	public void setRole(Role role) {
+		this.role = role;
+	}
+	// association
+	
 	@SuppressWarnings("deprecation")
 	public Integer getAge() {
 		Date date = new Date();

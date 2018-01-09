@@ -139,6 +139,184 @@
 	</delete>
 ```
 
+9、resultMap > association 使用
+```
+	// UserMapper.java
+	public interface UserMapper {
+		public List<User> getUserListByRoleId(@Param("userRole")Integer roleId);
+	}
+
+
+	// User.java
+	public class User {
+		// association
+		private Role role; // 用户角色
+		
+		public Role getRole() {
+			return role;
+		}
+		
+		public void setRole(Role role) {
+			this.role = role;
+		}
+		// association
+	}
+
+	// Role.java
+	public class Role {
+		private Integer id; // id
+		private String roleCode; // 角色编码
+		private String roleName; // 角色名称
+		...
+		//get{} set{}
+	}
+
+	// UserMapper.xml
+	<!-- 根据用户id获取用户列表  association start -->
+	<resultMap type="User" id="userRoleList">
+		<id property="id" column="id" />
+		<result property="userCode" column="userCode" />
+		<result property="userName" column="userName" />
+		<result property="userRole" column="userRole" />
+		<!-- javaType=Role 对应JavaBean名 | column 对应数据库查询结果集的字段 | property 对应JavaBean的属性-->
+		<association property="role" javaType="Role">
+			<id property="id" column="r_id" />
+			<result property="roleCode" column="roleCode" />
+			<result property="roleName" column="roleName" />
+		</association>
+	</resultMap>
+
+	<select id="getUserListByRoleId" parameterType="Integer"
+		resultMap="userRoleList">
+		select u.*,r.id as r_id,r.roleCode, r.roleName 
+		from smbms_user u,smbms_role r
+		where u.userRole=#{userRole} 
+		and u.userRole = r.id
+	</select>
+	<!-- 根据用户id获取用户列表  association end -->
+```
+
+10、resultMap > association使用2 (在第9步的基础上修改)
+```
+	// UserMapper.java
+	public interface UserMapper {
+		public List<User> getUserListByRoleId2(@Param("userRole")Integer roleId);
+	}
+
+
+	// UserMapper.xml
+	<!-- 根据用户id获取用户列表2  association start -->
+	<resultMap type="User" id="userRoleList2">
+		<id property="id" column="id" />
+		<result property="userCode" column="userCode" />
+		<result property="userName" column="userName" />
+		<result property="userRole" column="userRole" />
+		<association property="role" javaType="Role" resultMap="roleResult" />
+	</resultMap>
+
+	<resultMap type="Role" id="roleResult">
+		<id property="id" column="r_id" />
+		<result property="roleCode" column="roleCode" />
+		<result property="roleName" column="roleName" />
+	</resultMap>
+
+	<select id="getUserListByRoleId2" parameterType="Integer"
+		resultMap="userRoleList2">
+		select u.*,r.id as r_id,r.roleCode, r.roleName
+		from smbms_user u,smbms_role r
+		where u.userRole=#{userRole}
+		and u.userRole = r.id
+	</select>
+	<!-- 根据用户id获取用户列表2  association end -->
+```
+
+11、resultMap > collection使用1 
+```
+	// UserMapper.java
+	public interface UserMapper {
+		public List<User> getAddressListByUserId(@Param("id")Integer userId);
+	}
+
+	// User.java
+	public class User {
+		// collection
+		private List<Address> addressList;
+		
+		public List<Address> getAddressList() {
+			return addressList;
+		}
+		
+		public void setAddressList(List<Address> addressList) {
+			this.addressList = addressList;
+		}
+		// collection
+	}
+
+	// Role.java
+	public class Address {
+		...
+		//get{} set{}
+	}
+
+	// UserMapper.xml
+	<!-- 获取指定用户的地址列表（user表-address表： 1对多） collection start -->
+	<resultMap type="User" id="userAddressList">
+		<id property="id" column="id" />
+		<result property="userCode" column="userCode" />
+		<result property="userName" column="userName" />
+		<!-- ofType 对应JavaBean -->
+		<collection property="addressList" ofType="Address">
+			<id property="id" column="a_id" />
+			<result property="postCode" column="postCode" />
+			<result property="tel" column="tel" />
+			<result property="contact" column="contact" />
+			<result property="addressDesc" column="addressDesc" />
+		</collection>
+	</resultMap>
+
+	<select id="getAddressListByUserId" parameterType="Integer"
+		resultMap="userAddressList">
+		select u.*, a.id as a_id, a.contact, a.addressDesc, a.tel, a.postCode
+		from smbms_user u, smbms_address a
+		where u.id=a.userId and u.id=#{id}
+	</select>
+	<!-- 获取指定用户的地址列表（user表-address表： 1对多） collection end -->
+```
+
+12、resultMap > collection使用2 (在第11步的基础上修改) 
+```
+	// UserMapper.java
+	public interface UserMapper {
+		public List<User> getAddressListByUserId2(@Param("id")Integer userId);
+	}
+
+	// UserMapper.xml
+	<!-- 获取指定用户的地址列表2（user表-address表： 1对多） collection start -->
+	<resultMap type="User" id="userAddressList2">
+		<id property="id" column="id" />
+		<result property="userCode" column="userCode" />
+		<result property="userName" column="userName" />
+		<!-- ofType 对应JavaBean -->
+		<collection property="addressList" ofType="Address" resultMap="addressResult"/>
+	</resultMap>
+	
+	<resultMap type="Address" id="addressResult">
+		<id property="id" column="a_id" />
+		<result property="postCode" column="postCode" />
+		<result property="tel" column="tel" />
+		<result property="contact" column="contact" />
+		<result property="addressDesc" column="addressDesc" />
+	</resultMap>
+
+	<select id="getAddressListByUserId2" parameterType="Integer"
+		resultMap="userAddressList2">
+		select u.*, a.id as a_id, a.contact, a.addressDesc, a.tel, a.postCode
+		from smbms_user u, smbms_address a
+		where u.id=a.userId and u.id=#{id}
+	</select>
+	<!-- 获取指定用户的地址列表2（user表-address表： 1对多） collection end -->
+```
+
 
 @Author 瞌睡虫   
 @mybatis-3.2.2   

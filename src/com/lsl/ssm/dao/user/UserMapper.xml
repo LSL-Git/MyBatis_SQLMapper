@@ -77,14 +77,118 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		userRole=#{userRole},modifyBy=#{modifyBy},modifyDate=#{modifyDate}
 		where id = #{id}
 	</update>
-	
+
 	<!-- 修改当前用户密码 -->
 	<update id="updatePwd">
-		update smbms_user set userPassword=#{userPassword} where id = #{id}
+		update smbms_user set userPassword=#{userPassword}
+		where id = #{id}
 	</update>
-	
+
 	<!-- 根据用户id删除用户信息 -->
 	<delete id="deleteUserById">
 		delete from smbms_user where id = #{id} 
 	</delete>
+
+	<!-- 根据用户id获取用户列表  association start -->
+	<resultMap type="User" id="userRoleList">
+		<id property="id" column="id" />
+		<result property="userCode" column="userCode" />
+		<result property="userName" column="userName" />
+		<result property="userRole" column="userRole" />
+		<!--
+			javaType=Role 对应JavaBean名 | column 对应数据库查询结果集的字段 | property
+			对应JavaBean的属性
+		-->
+		<association property="role" javaType="Role">
+			<id property="id" column="r_id" />
+			<result property="roleCode" column="roleCode" />
+			<result property="roleName" column="roleName" />
+		</association>
+	</resultMap>
+
+	<select id="getUserListByRoleId" parameterType="Integer"
+		resultMap="userRoleList">
+		select u.*,r.id as r_id,r.roleCode, r.roleName
+		from
+		smbms_user u,smbms_role r
+		where u.userRole=#{userRole}
+		and u.userRole =
+		r.id
+	</select>
+	<!-- 根据用户id获取用户列表  association end -->
+
+	<!-- 根据用户id获取用户列表2  association start -->
+	<resultMap type="User" id="userRoleList2">
+		<id property="id" column="id" />
+		<result property="userCode" column="userCode" />
+		<result property="userName" column="userName" />
+		<result property="userRole" column="userRole" />
+		<association property="role" javaType="Role" resultMap="roleResult" />
+	</resultMap>
+
+	<resultMap type="Role" id="roleResult">
+		<id property="id" column="r_id" />
+		<result property="roleCode" column="roleCode" />
+		<result property="roleName" column="roleName" />
+	</resultMap>
+
+	<select id="getUserListByRoleId2" parameterType="Integer"
+		resultMap="userRoleList2">
+		select u.*,r.id as r_id,r.roleCode, r.roleName
+		from
+		smbms_user u,smbms_role r
+		where u.userRole=#{userRole}
+		and u.userRole =
+		r.id
+	</select>
+	<!-- 根据用户id获取用户列表2  association end -->
+
+	<!-- 获取指定用户的地址列表（user表-address表： 1对多） collection start -->
+	<resultMap type="User" id="userAddressList">
+		<id property="id" column="id" />
+		<result property="userCode" column="userCode" />
+		<result property="userName" column="userName" />
+		<!-- ofType 对应JavaBean -->
+		<collection property="addressList" ofType="Address">
+			<id property="id" column="a_id" />
+			<result property="postCode" column="postCode" />
+			<result property="tel" column="tel" />
+			<result property="contact" column="contact" />
+			<result property="addressDesc" column="addressDesc" />
+		</collection>
+	</resultMap>
+
+	<select id="getAddressListByUserId" parameterType="Integer"
+		resultMap="userAddressList">
+		select u.*, a.id as a_id, a.contact, a.addressDesc, a.tel, a.postCode
+		from smbms_user u, smbms_address a
+		where u.id=a.userId and u.id=#{id}
+	</select>
+	<!-- 获取指定用户的地址列表（user表-address表： 1对多） collection end -->
+
+	<!-- 获取指定用户的地址列表2（user表-address表： 1对多） collection start -->
+	<resultMap type="User" id="userAddressList2">
+		<id property="id" column="id" />
+		<result property="userCode" column="userCode" />
+		<result property="userName" column="userName" />
+		<!-- ofType 对应JavaBean -->
+		<collection property="addressList" ofType="Address" resultMap="addressResult"/>
+	</resultMap>
+	
+	<resultMap type="Address" id="addressResult">
+		<id property="id" column="a_id" />
+		<result property="postCode" column="postCode" />
+		<result property="tel" column="tel" />
+		<result property="contact" column="contact" />
+		<result property="addressDesc" column="addressDesc" />
+	</resultMap>
+
+	<select id="getAddressListByUserId2" parameterType="Integer"
+		resultMap="userAddressList2">
+		select u.*, a.id as a_id, a.contact, a.addressDesc, a.tel, a.postCode
+		from smbms_user u, smbms_address a
+		where u.id=a.userId and u.id=#{id}
+	</select>
+	<!-- 获取指定用户的地址列表2（user表-address表： 1对多） collection end -->
+	
 </mapper>

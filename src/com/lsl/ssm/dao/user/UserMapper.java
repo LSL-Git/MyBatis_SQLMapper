@@ -67,4 +67,32 @@ public interface UserMapper {
 	 * @return
 	 */
 	public int deleteUserById(@Param("id")Integer delId);
+	
+	/**
+	 * 根据用户id获取用户信息
+	 * @param roleId
+	 * @return
+	 */
+	public List<User> getUserListByRoleId(@Param("userRole")Integer roleId);
+	
+	/**
+	 * 根据用户id获取用户信息
+	 * @param roleId
+	 * @return
+	 */
+	public List<User> getUserListByRoleId2(@Param("userRole")Integer roleId);
+	
+	/**
+	 * 获取指定用户的地址列表(collection)
+	 * @param userId
+	 * @return
+	 */
+	public List<User> getAddressListByUserId(@Param("id")Integer userId);
+
+	/**
+	 * 获取指定用户的地址列表(collection)
+	 * @param userId
+	 * @return
+	 */
+	public List<User> getAddressListByUserId2(@Param("id")Integer userId);
 }

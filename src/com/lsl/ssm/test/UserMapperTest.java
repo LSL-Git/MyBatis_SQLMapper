@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.lsl.ssm.dao.user.UserMapper;
+import com.lsl.ssm.pojo.Address;
 import com.lsl.ssm.pojo.User;
 import com.lsl.ssm.utils.MyBatisUtils;
 
@@ -193,6 +194,7 @@ public class UserMapperTest {
 			
 			count = sqlSession.getMapper(UserMapper.class).addUser(user);		
 			
+			@SuppressWarnings("unused")
 			int i = 3/0; // 模拟异常，进行使其进行回滚
 			
 			sqlSession.commit(); // 必须提交，不然不会将数据保存到数据库
@@ -233,6 +235,7 @@ public class UserMapperTest {
 			sqlSession = MyBatisUtils.createSqlSession();
 			count = sqlSession.getMapper(UserMapper.class).modify(user);
 			
+			@SuppressWarnings("unused")
 			int i = 3/0; // 模拟异常，进行使其进行回滚
 			
 			sqlSession.commit();
@@ -257,6 +260,7 @@ public class UserMapperTest {
 			
 			count = sqlSession.getMapper(UserMapper.class).updatePwd(18, "0000003");
 			
+			@SuppressWarnings("unused")
 			int i = 3/0; // 模拟异常，进行使其进行回滚
 			
 			sqlSession.commit();			
@@ -271,8 +275,7 @@ public class UserMapperTest {
 		}
 		logger.debug("==>testUpdatePwd count:" + count);
 	}
-	
-	
+		
 	@Test
 	public void testDeleteUserById() {
 		System.err.println("======================testDeleteUserById=========================");
@@ -297,4 +300,133 @@ public class UserMapperTest {
 		}
 		logger.debug("==>testDeleteUserById count:" + count);
 	}
+	
+	@Test
+	public void testGetUserListByRoleId() {
+		System.err.println("======================testGetUserListByRoleId=========================");
+		SqlSession sqlSession = null;
+		List<User> userList = new ArrayList<User>();
+		int roleId = 3;
+		try {
+			sqlSession = MyBatisUtils.createSqlSession();
+			
+			userList = sqlSession.getMapper(UserMapper.class).getUserListByRoleId(roleId);
+			
+//			int i = 3/0; // 模拟异常，进行使其进行回滚
+			
+			sqlSession.commit();			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			
+			sqlSession.rollback();
+		} finally {
+			MyBatisUtils.closeSqlSession(sqlSession);
+		}
+		
+		logger.debug("getUserListByRoleIdTest userList.size : " + userList.size());
+		for(User user:userList){
+			logger.debug("userList =====> userName: " + user.getUserName() + ", Role: " 
+								+ user.getRole().getId() + " --- " + user.getRole().getRoleCode() 
+								+" --- " + user.getRole().getRoleName());
+		}
+	}
+	
+	@Test
+	public void testGetUserListByRoleId2() {
+		System.err.println("======================testGetUserListByRoleId2=========================");
+		SqlSession sqlSession = null;
+		List<User> userList = new ArrayList<User>();
+		int roleId = 3;
+		try {
+			sqlSession = MyBatisUtils.createSqlSession();
+			
+			userList = sqlSession.getMapper(UserMapper.class).getUserListByRoleId2(roleId);
+			
+//			int i = 3/0; // 模拟异常，进行使其进行回滚
+			
+			sqlSession.commit();			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			
+			sqlSession.rollback();
+		} finally {
+			MyBatisUtils.closeSqlSession(sqlSession);
+		}
+		
+		logger.debug("getUserListByRoleIdTest2 userList.size : " + userList.size());
+		for(User user:userList){
+			logger.debug("userList =====> userName: " + user.getUserName() + ", Role: " 
+								+ user.getRole().getId() + " --- " + user.getRole().getRoleCode() 
+								+" --- " + user.getRole().getRoleName());
+		}
+	}
+	
+	@Test
+	public void testGetAddressListByUserId() {
+		System.err.println("======================testGetAddressListByUserId=========================");
+		SqlSession sqlSession = null;
+		List<User> userList = new ArrayList<User>();
+		int userId = 1;
+		try {
+			sqlSession = MyBatisUtils.createSqlSession();
+			
+			userList = sqlSession.getMapper(UserMapper.class).getAddressListByUserId(userId);
+			
+//			int i = 3/0; // 模拟异常，进行使其进行回滚
+			
+			sqlSession.commit();			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			
+			sqlSession.rollback();
+		} finally {
+			MyBatisUtils.closeSqlSession(sqlSession);
+		}
+		
+		for(User user:userList){
+			logger.debug("userList(include:addresslist) =====> userCode: " + user.getUserCode() + ", userName: " + user.getUserName());
+			for(Address address : user.getAddressList()){
+				logger.debug("address ----> id: " + address.getId() + ", contact: " + address.getContact() 
+						+ ", addressDesc: " + address.getAddressDesc() + ", tel: " + address.getTel()
+						+ ", postCode: " + address.getPostCode());
+			}
+		}
+	}
+	
+	@Test
+	public void testGetAddressListByUserId2() {
+		System.err.println("======================testGetAddressListByUserId2=========================");
+		SqlSession sqlSession = null;
+		List<User> userList = new ArrayList<User>();
+		int userId = 2;
+		try {
+			sqlSession = MyBatisUtils.createSqlSession();
+			
+			userList = sqlSession.getMapper(UserMapper.class).getAddressListByUserId2(userId);
+			
+//			int i = 3/0; // 模拟异常，进行使其进行回滚
+			
+			sqlSession.commit();			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			
+			sqlSession.rollback();
+		} finally {
+			MyBatisUtils.closeSqlSession(sqlSession);
+		}
+		
+		for(User user:userList){
+			logger.debug("userList(include:addresslist) =====> userCode: " + user.getUserCode() + ", userName: " + user.getUserName());
+			for(Address address : user.getAddressList()){
+				logger.debug("address ----> id: " + address.getId() + ", contact: " + address.getContact() 
+						+ ", addressDesc: " + address.getAddressDesc() + ", tel: " + address.getTel()
+						+ ", postCode: " + address.getPostCode());
+			}
+		}
+	}
+	
 }
