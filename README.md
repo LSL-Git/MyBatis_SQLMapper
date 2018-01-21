@@ -1,6 +1,6 @@
 # MyBatis_SQLMapper
 
-**SSM 框架学习**
+**SSM 框架学习 (MyBatis篇)**
 
 二、MyBatis SQL 映射文件的配置   
 
